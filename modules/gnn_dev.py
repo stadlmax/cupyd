@@ -6,9 +6,11 @@ import modules.jupyter
 def gnn_env(writer):
     writer.emit("COPY contexts/envs/gnn_dev.yaml /tmp/gnn_dev.yaml")
     writer.emit("""RUN \\
-    mamba env create -n gnn_dev -f /tmp/gnn_dev.yaml && \\
+    mamba env update -n base -f /tmp/gnn_dev.yaml && \\
     rm -f /tmp/gnn_dev.yaml && \\
     mamba clean --yes --all""")
+    writer.emit("RUN python3 -m pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio===0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html")
+    writer.emit("RUN python3 -m pip install torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.10.0+cu113.html")
 
 
 def emit(writer, **kwargs):

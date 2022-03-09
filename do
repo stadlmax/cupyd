@@ -105,6 +105,8 @@ def parseargs():
     parser.add_argument("-precmd", default=None, type=str,
         help="Run this command just *before* launching the container. This is "
         " valid only when the '-run' option is passed.")
+    parser.add_argument("-not_interactive", action="store_true", default=False,
+        help="Does not run docker run with '-it' flag.")
     parser.add_argument("-printComments", action="store_true", default=False,
         help="Print the origin of docker commands in the generated Dockerfile")
     parser.add_argument("-privileged", action="store_true", default=False,
@@ -168,7 +170,11 @@ class Runner:
 
     def run(self):
         args = self.args
-        finalcmd = ["-it", "--rm", "--runtime", "nvidia"]
+        if args.not_interactive:
+            finalcmd = ["--rm", "--runtime", "nvidia"]
+        else:
+            finalcmd = ["-it", "--rm", "--runtime", "nvidia"]
+
         if not args.noExposePorts:
             finalcmd += self.__getPort(args.img)
         finalcmd += self.__getVols(args)
