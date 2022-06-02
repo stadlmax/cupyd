@@ -6,7 +6,7 @@ channels:
   - conda-forge
   - pytorch
 dependencies:
-# use cmake 3.20 as this will ask nvcc to provide correct headers
+  # use cmake 3.20 as this will ask nvcc to provide correct headers
   - cmake>=3.20,!=3.23.0
   - compilers
   - clang=11.1.0
