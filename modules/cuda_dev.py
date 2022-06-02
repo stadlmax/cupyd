@@ -31,7 +31,7 @@ def emit(writer, cudaVersion, baseImage="ubuntu:18.04", rcUrl=None):
     if short >= 10.1:
         pkgs += [
             "cuda-nsight-compute-$pkgVersion",
-            "cuda-nsight-systems-$pkgVersion",
+            "cuda-nsight-systems-11-6",
         ]
     # math libraries
     if short < 11.0:

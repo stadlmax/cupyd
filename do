@@ -107,6 +107,9 @@ def parseargs():
         " valid only when the '-run' option is passed.")
     parser.add_argument("-not_interactive", action="store_true", default=False,
         help="Does not run docker run with '-it' flag.")
+    parser.add_argument("-cpus", default=-1, type=float,
+        help="Limits number of visible cpus to container.")
+    parser.add_argument("-cpuset_cpus", default="", type=str, help="Specifys visible cpus to container.")
     parser.add_argument("-printComments", action="store_true", default=False,
         help="Print the origin of docker commands in the generated Dockerfile")
     parser.add_argument("-privileged", action="store_true", default=False,
@@ -171,9 +174,22 @@ class Runner:
     def run(self):
         args = self.args
         if args.not_interactive:
-            finalcmd = ["--rm", "--runtime", "nvidia"]
+            finalcmd = []
         else:
-            finalcmd = ["-it", "--rm", "--runtime", "nvidia"]
+            finalcmd = ["-it"]
+
+        if args.cpus > 0:
+            finalcmd.append("--cpus") 
+            finalcmd.append(str(args.cpus))
+
+        if args.cpuset_cpus:
+            finalcmd.append("--cpuset-cpus")
+            finalcmd.append(args.cpuset_cpus)
+        
+        finalcmd.append("--ipc=host")
+        finalcmd.append("--runtime")
+        finalcmd.append("nvidia")
+
 
         if not args.noExposePorts:
             finalcmd += self.__getPort(args.img)
