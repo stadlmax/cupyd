@@ -1,20 +1,17 @@
 name: gnn_dev
 channels:
+  - pytorch
   - rapidsai
   - nvidia
-  - rapidsai-nightly
   - conda-forge
-  - pytorch
 dependencies:
-  # use cmake 3.20 as this will ask nvcc to provide correct headers
+# use cmake 3.20 as this will ask nvcc to provide correct headers
   - cmake>=3.20,!=3.23.0
   - compilers
   - clang=11.1.0
   - clang-tools=11.1.0
   - cudatoolkit=11.5
-  - cuda-python>=11.5,<12.0
   - cudnn=8.2
-  - cython>=0.29,<0.30
   - doxygen=1.8.20
   - flake8
   - jupyter
@@ -23,10 +20,16 @@ dependencies:
   - numpy>=1.17
   - pandas
   - pytest>=4.6
-  - python>=3
+  - python=3.9
   - pytorch=1.11
   - scikit-learn>=0.21
 # needed since cudnn requires sysroot/glibc >= 2.14
   - sysroot_linux-64=2.17
   - unzip
   - wget
+  - pip
+  - pip:
+    - ase==3.22.1
+    - pymatgen==2022.1.9
+    - git+https://github.com/mlcommons/logging.git
+    - torchviz

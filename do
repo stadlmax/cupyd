@@ -442,7 +442,7 @@ class Builder:
         if self.args.onlycopy:
             return
         print("Building image '%s'..." % self.args.img)
-        dockercmd("build", "-t", self.args.img, ".")
+        dockercmd("build", "-t", self.args.img, ".") # "--no-cache",
 
 
 if __name__ == "__main__":

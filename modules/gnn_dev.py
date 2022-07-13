@@ -4,11 +4,12 @@ import modules.jupyter
 
 
 def gnn_env(writer):
+    writer.emit("RUN apt-get update && apt-get install -y --no-install-recommends graphviz")
     writer.emit("COPY contexts/envs/gnn_dev.yaml /tmp/gnn_dev.yaml")
-    writer.emit("""RUN \\
-    mamba env update -n base -f /tmp/gnn_dev.yaml && \\
-    rm -f /tmp/gnn_dev.yaml && \\
-    mamba clean --yes --all""")
+    writer.condaEnv("/tmp/gnn_dev.yaml", "gnn_dev", deleteYaml=True)
+    
+    writer.emit('SHELL ["conda", "run", "-n", "gnn_dev", "/bin/bash", "-c"]')
+    writer.emit("RUN pip install torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.11.0+cu115.html")
 
 def emit(writer, **kwargs):
     modules.conda.emit(writer)
